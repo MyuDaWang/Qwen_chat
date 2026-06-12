@@ -48,7 +48,7 @@ export function ChatShell() {
   const [messagesByConversation, setMessagesByConversation] = useState<Record<string, MessageDTO[]>>({});
   const [isStreaming, setIsStreaming] = useState(false);
   const [selectedModelId, setSelectedModelId] = useState<ChatModelId>(DEFAULT_CHAT_MODEL_ID);
-  const [enableThinking, setEnableThinking] = useState(true);
+  const [enableThinking, setEnableThinking] = useState(false);
   const [me, setMe] = useState<MePayload | null>(null);
   const [draftPrompt, setDraftPrompt] = useState<string | undefined>();
   const [error, setError] = useState<string | null>(null);
