@@ -71,6 +71,8 @@ ALLOW_ANONYMOUS_LOCAL_USER=1
 
 ## 本地启动
 
+启动前请先打开 Docker Desktop，并确认 Docker 正在运行。数据库依赖 PostgreSQL 容器，如果 Docker 没有启动，注册、登录、会话保存等后端功能会失败。
+
 ```bash
 cd web
 docker compose up -d
