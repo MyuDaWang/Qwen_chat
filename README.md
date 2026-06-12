@@ -71,17 +71,8 @@ MODEL_NAME="qwen3-vl-plus"
 MODEL_SUPPORTS_IMAGES=1
 ```
 
-## 常用命令
+## 使用方式
 
-```bash
-cd web
-npm run dev
-npm run build
-npm run start
-npm run lint
-npm run typecheck
-npm run test
-npm run db:migrate
-npm run db:migrate:deploy
-npm run db:studio
-```
+服务启动后，在浏览器打开 `http://localhost:3000` 即可开始使用。
+
+进入页面后可以直接新建会话并输入问题，支持连续追问、Markdown 输出、图片上传、附件解析和历史会话保存。需要调整回答风格、语言、记忆或其他偏好时，可在左下角账号入口打开“设置与记忆”。
