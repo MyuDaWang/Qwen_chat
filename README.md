@@ -23,30 +23,28 @@ Qwen Chat Web 是一套面向企业和个人知识工作的 AI 对话应用，�
 ## 项目结构
 
 ```txt
-app/                         Next.js 页面和 API 路由
-app/api/chat/                聊天发送、SSE 流式输出和图像生成入口
-app/api/conversations/       会话与消息管理
-app/api/auth/                注册、登录和登出
-app/api/settings/            个性化设置读取与保存
-app/api/memories/            用户记忆管理
-app/api/upload/              图片、文档和表格上传解析
-app/api/uploads/             上传文件访问入口
-src/ai/                      模型列表、Agent、上下文构建和 LLM Provider
-src/ai/llm/                  OpenAI-compatible 与网关 Provider
-src/features/chat/components/ 聊天主界面、消息、输入框、侧栏和设置弹窗
-src/features/chat/hooks/      聊天页状态与偏好设置 hooks
-src/server/                  认证、数据库、用户、灰度、prompt 组合和服务端逻辑
-src/server/repositories/      会话与消息仓储
-src/server/upload/            上传校验、保存和附件解析
-src/shared/                  共享类型、校验、SSE 协议和基础 UI
-prisma/                      数据模型和数据库迁移
-tests/                       核心功能测试
-data/uploads/                运行时上传目录，仅保留 .gitkeep
+README.md                    项目说明
+web/                         Web 应用主目录
+web/app/                     Next.js 页面和 API 路由
+web/app/api/chat/            聊天发送、SSE 流式输出和图像生成入口
+web/app/api/conversations/   会话与消息管理
+web/app/api/auth/            注册、登录和登出
+web/app/api/settings/        个性化设置读取与保存
+web/app/api/memories/        用户记忆管理
+web/app/api/upload/          图片、文档和表格上传解析
+web/src/ai/                  模型列表、Agent、上下文构建和 LLM Provider
+web/src/features/chat/       聊天界面组件和 hooks
+web/src/server/              认证、数据库、用户、灰度、prompt 组合和服务端逻辑
+web/src/shared/              共享类型、校验、SSE 协议和基础 UI
+web/prisma/                  数据模型和数据库迁移
+web/tests/                   核心功能测试
+web/data/uploads/            运行时上传目录，仅保留 .gitkeep
 ```
 
 ## 本地启动
 
 ```bash
+cd web
 docker compose up -d
 npm install
 npm run db:migrate
@@ -70,6 +68,7 @@ MODEL_SUPPORTS_IMAGES=1
 ## 常用命令
 
 ```bash
+cd web
 npm run dev
 npm run build
 npm run start
