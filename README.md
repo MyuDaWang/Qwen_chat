@@ -6,7 +6,7 @@ Qwen Chat Web 是一套面向企业和个人知识工作的 AI 对话应用，�
 
 ![聊天主界面](web/public/previews/chat-preview.jpg)
 
-![设置与个性化](web/public/previews/settings-preview.jpg)
+![图像生成预览](web/public/previews/image-generation-preview.jpg)
 
 ## 核心能力
 
