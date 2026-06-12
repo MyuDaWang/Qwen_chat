@@ -47,6 +47,28 @@ web/tests/                   核心功能测试
 web/data/uploads/            运行时上传目录，仅保留 .gitkeep
 ```
 
+## 环境配置
+
+复制示例环境变量文件，并填写自己的模型 API Key：
+
+```bash
+cd web
+cp .env.example .env
+```
+
+关键配置如下：
+
+```bash
+DATABASE_URL="postgresql://qwen:qwen@localhost:5432/qwen_chat?schema=public"
+OPENAI_API_KEY="your-api-key"
+OPENAI_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
+MODEL_NAME="qwen3-vl-plus"
+MODEL_SUPPORTS_IMAGES=1
+ALLOW_ANONYMOUS_LOCAL_USER=1
+```
+
+其中 `OPENAI_API_KEY` 需要替换为可用的 DashScope API Key，其他配置可先保持默认。
+
 ## 本地启动
 
 ```bash
@@ -58,18 +80,6 @@ npm run dev
 ```
 
 服务默认运行在 `http://localhost:3000`。
-
-## 环境变量
-
-复制 `.env.example` 到 `.env` 后配置：
-
-```bash
-DATABASE_URL="postgresql://qwen:qwen@localhost:5432/qwen_chat?schema=public"
-OPENAI_API_KEY="your-api-key"
-OPENAI_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
-MODEL_NAME="qwen3-vl-plus"
-MODEL_SUPPORTS_IMAGES=1
-```
 
 ## 使用方式
 
