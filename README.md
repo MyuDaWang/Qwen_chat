@@ -2,6 +2,12 @@
 
 Qwen Chat Web 是一套面向企业和个人知识工作的 AI 对话应用，支持多轮会话、Markdown 流式输出、图片理解、附件解析、图像生成、个性化设置和账号体系。项目采用前后端一体的 Web 架构，便于快速部署、持续迭代和接入不同模型服务。
 
+## 产品预览
+
+![聊天主界面](web/public/previews/chat-preview.jpg)
+
+![设置与个性化](web/public/previews/settings-preview.jpg)
+
 ## 核心能力
 
 - 多轮对话：支持会话创建、切换、历史消息恢复和连续追问。
