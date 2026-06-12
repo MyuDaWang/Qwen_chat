@@ -1,0 +1,106 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Conversation {
+  id        String    @id @default(cuid())
+  title     String    @default("新会话")
+  userId    String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  messages  Message[]
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([updatedAt])
+  @@index([userId])
+}
+
+model User {
+  id               String         @id @default(cuid())
+  email            String         @unique
+  name             String
+  passwordHash     String
+  customerId       String         @unique
+  plan             String         @default("free")
+  sessionTokenHash String?
+  sessionExpiresAt DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  conversations    Conversation[]
+
+  @@index([sessionTokenHash])
+}
+
+model UserPreference {
+  userId             String   @id
+  theme              String   @default("light")
+  language           String   @default("auto")
+  tone               String   @default("default")
+  warmth             String   @default("default")
+  enthusiasm         String   @default("default")
+  titleStyle         String   @default("default")
+  emojiStyle         String   @default("default")
+  quickAnswer        Boolean  @default(true)
+  customInstructions String?  @db.Text
+  nickname           String?
+  occupation         String?
+  details            String?  @db.Text
+  memoryEnabled      Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([updatedAt])
+}
+
+model UserMemory {
+  id        String   @id @default(cuid())
+  userId    String
+  content   String   @db.Text
+  source    String   @default("manual")
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, enabled, updatedAt])
+}
+
+model Message {
+  id             String              @id @default(cuid())
+  conversationId String
+  role           String
+  content        String              @db.Text
+  status         String              @default("done")
+  model          String?
+  error          String?
+  usage          String?             @db.Text
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  conversation   Conversation        @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  attachments    MessageAttachment[]
+
+  @@index([conversationId, createdAt])
+  @@index([status])
+}
+
+model MessageAttachment {
+  id           String   @id @default(cuid())
+  messageId    String
+  type         String
+  url          String
+  mimeType     String
+  size         Int
+  width        Int?
+  height       Int?
+  originalName String?
+  createdAt    DateTime @default(now())
+
+  message      Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([messageId])
+}

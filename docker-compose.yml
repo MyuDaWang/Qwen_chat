@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: qwen-chat-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: qwen
+      POSTGRES_PASSWORD: qwen
+      POSTGRES_DB: qwen_chat
+    ports:
+      - "5432:5432"
+    volumes:
+      - qwen_chat_pgdata:/var/lib/postgresql/data
+
+volumes:
+  qwen_chat_pgdata:

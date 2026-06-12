@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+dist/
+
+# Test and compiler output
+coverage/
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# Local system files
+.DS_Store
+Thumbs.db
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Local data
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+data/uploads/*
+!data/uploads/.gitkeep
+
+# Deployment/tooling caches
+.vercel/
+.turbo/
+.cache/
