@@ -75,7 +75,7 @@ ALLOW_ANONYMOUS_LOCAL_USER=1
 cd web
 docker compose up -d
 npm install
-npm run db:migrate
+npm run db:migrate:deploy
 npm run dev
 ```
 

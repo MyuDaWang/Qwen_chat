@@ -1,5 +1,6 @@
 import { getAuthenticatedUser } from "@/src/server/auth";
 import type { ChatModel } from "@/src/ai/models";
+import { prisma } from "@/src/server/db";
 import { canUsePlan, normalizePlan, type UserPlan } from "@/src/server/plans";
 
 export type CurrentUser = {
@@ -26,6 +27,40 @@ function allowAnonymousLocalUser() {
   return process.env.NODE_ENV !== "production";
 }
 
+function anonymousLocalUserConfig(): CurrentUser & { email: string } {
+  const id = process.env.DEFAULT_USER_ID || "local-user";
+  const customerId = process.env.DEFAULT_CUSTOMER_ID || "CUST-LOCAL-001";
+  return {
+    id,
+    customerId,
+    email: process.env.DEFAULT_USER_EMAIL || `${id}@local.qwen`,
+    name: process.env.DEFAULT_USER_NAME || "本地企业用户",
+    plan: normalizePlan(process.env.DEFAULT_USER_PLAN)
+  };
+}
+
+async function ensureAnonymousLocalUser() {
+  const user = anonymousLocalUserConfig();
+  await prisma.user.upsert({
+    where: { id: user.id },
+    update: {
+      customerId: user.customerId,
+      email: user.email,
+      name: user.name,
+      plan: user.plan
+    },
+    create: {
+      id: user.id,
+      customerId: user.customerId,
+      email: user.email,
+      name: user.name,
+      plan: user.plan,
+      passwordHash: "anonymous-local-user"
+    }
+  });
+  return user;
+}
+
 export async function getCurrentUser(): Promise<CurrentUser & { authenticated: boolean }> {
   const authUser = await getAuthenticatedUser();
   if (authUser) {
@@ -42,11 +77,12 @@ export async function getCurrentUser(): Promise<CurrentUser & { authenticated: b
     throw new AuthRequiredError();
   }
 
+  const localUser = await ensureAnonymousLocalUser();
   return {
-    id: process.env.DEFAULT_USER_ID || "local-user",
-    customerId: process.env.DEFAULT_CUSTOMER_ID || "CUST-LOCAL-001",
-    name: process.env.DEFAULT_USER_NAME || "本地企业用户",
-    plan: normalizePlan(process.env.DEFAULT_USER_PLAN),
+    id: localUser.id,
+    customerId: localUser.customerId,
+    name: localUser.name,
+    plan: localUser.plan,
     authenticated: false
   };
 }
