@@ -9,6 +9,7 @@ import type { UploadedAttachment } from "@/src/shared/types";
 
 type Props = {
   disabled?: boolean;
+  disabledPlaceholder?: string;
   isStreaming: boolean;
   draft?: string;
   onDraftConsumed?: () => void;
@@ -40,7 +41,7 @@ const capabilities = [
   }
 ] as const;
 
-export function ChatInput({ disabled, isStreaming, draft, onDraftConsumed, onSend, onStop }: Props) {
+export function ChatInput({ disabled, disabledPlaceholder, isStreaming, draft, onDraftConsumed, onSend, onStop }: Props) {
   const [text, setText] = useState("");
   const [attachments, setAttachments] = useState<UploadedAttachment[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -145,7 +146,7 @@ export function ChatInput({ disabled, isStreaming, draft, onDraftConsumed, onSen
           onChange={(event) => setText(event.target.value)}
           onKeyDown={onKeyDown}
           disabled={disabled || isStreaming}
-          placeholder={disabled ? "请先新建或选择会话" : "输入问题，Shift + Enter 换行"}
+          placeholder={disabled ? disabledPlaceholder ?? "请先新建或选择会话" : "输入问题，Shift + Enter 换行"}
           className="min-h-24 border-transparent bg-transparent shadow-none focus:ring-0"
         />
         <div className="mt-2 flex items-center justify-between">

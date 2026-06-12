@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { ChevronDown, Crown, LogOut, Settings, ShieldCheck, UserRound } from "lucide-react";
 import { SettingsDialog } from "@/src/features/chat/components/SettingsDialog";
 import { Button } from "@/src/shared/ui/button";
@@ -19,9 +19,11 @@ type Props = {
   onAuthChange: () => void;
   preferences?: UserPreferenceDTO | null;
   onPreferencesChange?: (preferences: UserPreferenceDTO) => void;
+  authPrompt?: string | null;
+  authPromptSignal?: number;
 };
 
-export function AccountMenu({ account, onAuthChange, preferences, onPreferencesChange }: Props) {
+export function AccountMenu({ account, onAuthChange, preferences, onPreferencesChange, authPrompt, authPromptSignal = 0 }: Props) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
@@ -31,6 +33,13 @@ export function AccountMenu({ account, onAuthChange, preferences, onPreferencesC
   const [error, setError] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const authenticated = account?.authenticated ?? false;
+
+  useEffect(() => {
+    if (!authPrompt) return;
+    setOpen(true);
+    setMode("login");
+    setError(null);
+  }, [authPrompt, authPromptSignal]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -156,6 +165,7 @@ export function AccountMenu({ account, onAuthChange, preferences, onPreferencesC
             </div>
           ) : (
             <form className="space-y-3 p-4" onSubmit={submit}>
+              {authPrompt && <div className="rounded-2xl bg-cyan-50 px-3 py-2 text-xs leading-5 text-cyan-700">{authPrompt}</div>}
               <div className="grid grid-cols-2 rounded-2xl bg-slate-100 p-1 text-sm">
                 <button type="button" className={cn("rounded-xl py-2", mode === "login" && "bg-white shadow-sm")} onClick={() => setMode("login")}>
                   登录

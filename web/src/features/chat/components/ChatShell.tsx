@@ -373,6 +373,7 @@ export function ChatShell() {
           </div>
           <ChatInput
             disabled={!activeConversationId}
+            disabledPlaceholder={me?.user.authenticated ? "请先新建或选择会话" : "请先登录或注册账号"}
             isStreaming={isStreaming}
             draft={draftPrompt}
             onDraftConsumed={() => setDraftPrompt(undefined)}

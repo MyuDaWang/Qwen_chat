@@ -37,6 +37,8 @@ export function ConversationSidebar({
   onPreferencesChange
 }: Props) {
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [authPrompt, setAuthPrompt] = useState<string | null>(null);
+  const [authPromptSignal, setAuthPromptSignal] = useState(0);
   const filteredConversations = useMemo(() => {
     const keyword = searchKeyword.trim().toLowerCase();
     if (!keyword) return conversations;
@@ -47,10 +49,20 @@ export function ConversationSidebar({
     });
   }, [conversations, searchKeyword]);
 
+  function handleCreate() {
+    if (!account?.authenticated) {
+      setAuthPrompt("请先登录或注册账号，登录后即可新建对话并保存历史记录。");
+      setAuthPromptSignal((current) => current + 1);
+      return;
+    }
+    setAuthPrompt(null);
+    onCreate();
+  }
+
   return (
     <aside className="flex h-full w-[300px] shrink-0 flex-col border-r border-white/60 bg-white/60 px-4 pb-4 pt-14 shadow-panel backdrop-blur-2xl">
       <BrandLogo />
-      <Button className="mt-5 w-full" variant="gradient" onClick={onCreate}>
+      <Button className="mt-5 w-full" variant="gradient" onClick={handleCreate}>
         <MessageSquarePlus className="h-4 w-4" />
         新建对话
       </Button>
@@ -112,7 +124,14 @@ export function ConversationSidebar({
           </div>
         )}
       </div>
-      <AccountMenu account={account} preferences={preferences} onPreferencesChange={onPreferencesChange} onAuthChange={onAuthChange} />
+      <AccountMenu
+        account={account}
+        preferences={preferences}
+        onPreferencesChange={onPreferencesChange}
+        onAuthChange={onAuthChange}
+        authPrompt={authPrompt}
+        authPromptSignal={authPromptSignal}
+      />
     </aside>
   );
 }
